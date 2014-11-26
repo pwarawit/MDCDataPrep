@@ -1,8 +1,4 @@
-id,default_code,list_price
-__export__.product_product_493,ABR10014,109
-__export__.product_product_495,ABR1001421P12,1308
-__export__.product_product_494,ABR10021,109
-__export__.product_product_185,ABR1014B,99
-__export__.product_product_186,ABR1014P,99
-__export__.product_product_184,ABR1014P12,1188
-__export__.product_product_496,BS7019,1290
+Price List,Name,Price List Items / Rule Name,Price List Items / Product,Price List Items / Sequence,Price List Items / Based On,items_id/price_discount,items_id/price_surcharge
+test,test version,ABR10014,ABR10014,50,Public Price,-1,111
+,,ABR1001421P12,ABR1001421P12,1,Public Price,-1,1332
+,,ABR10021,ABR10021,1,Public Price,-1,109

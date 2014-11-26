@@ -19,6 +19,7 @@ if sys.argv[1] not in action_list or sys.argv[1] in ['help','usage']:
     print usage_msg
     exit()
 
+action = sys.argv[1]
 inputfile1 = sys.argv[2]
 inputfile2 = sys.argv[3]
 outputfile = sys.argv[4]
@@ -39,12 +40,20 @@ outputlist =[]
 
 logmsg = ""
 
+# for pricelist - read the first line for pricelist name and pricelist version name
+if action == 'pricelist':
+    pricelist_name = inputlist1[0]['pricelist_name']
+    version_name = inputlist1[0]['version_name']
+
+first_line = True
+
 for data in inputlist2:
 #     print data['default_code']
     found_matched = False
     for prod_code in inputlist1:
         re_pat = prod_code['prod_code'] + '[B|BL|D|G|M|P|W]{0,2}[0-9]{0,4}P?[1|2|3|4|6|12]{0,2}[B|BL|D|G|M|P|W]{0,2}$'
         if re.search(re_pat, data['default_code']):
+            # Found the matched RE pattern
             packcount_factor = 1
             packcount = re.search(r'(P[2|3|4|6|12]{1,2}$)', data['default_code'])
             if packcount:
@@ -52,18 +61,54 @@ for data in inputlist2:
                     packcount_factor = int(packcount.group(1)[1:])
             
             logmsg = logmsg + data['default_code'] + " matched with " + prod_code['prod_code'] + " multiplied by " + str(packcount_factor) +"\n"
-            outputlist.append({'id':data['id'],'default_code':data['default_code'],'list_price':str(int(prod_code['srp'])*packcount_factor)})
+            if action == 'baseprice':
+                outputlist.append({'id':data['id'],'default_code':data['default_code'],
+                                   'list_price':str(int(prod_code['srp'])*packcount_factor)})
+            elif action == 'pricelist' and first_line:
+                outputlist.append({'Price List': pricelist_name,
+                                   'Name': version_name,
+                                   'Price List Items / Rule Name':data['default_code'],
+                                   'Price List Items / Product':data['default_code'],
+                                   'Price List Items / Sequence': '50',
+                                   'Price List Items / Based On': 'Public Price',
+                                   'items_id/price_discount': -1,
+                                   'items_id/price_surcharge':str(int(prod_code['price'])*packcount_factor)})
+                first_line = False
+            elif action == 'pricelist':
+                outputlist.append({'Price List': '',
+                                   'Name': '',
+                                   'Price List Items / Rule Name':data['default_code'],
+                                   'Price List Items / Product':data['default_code'],
+                                   'Price List Items / Sequence': '1',
+                                   'Price List Items / Based On': 'Public Price',
+                                   'items_id/price_discount': -1,
+                                   'items_id/price_surcharge':str(int(prod_code['price'])*packcount_factor)})
+            
             found_matched = True
+            first_line = False
             break
     
     if not found_matched:
         logmsg = logmsg + data['default_code'] + " DOES NOT FOUND ANY MATCHED \n"
 
 baseprice_header = ["id","default_code","list_price"]
+pricelist_header = ["Price List","Name",
+                    "Price List Items / Rule Name",
+                    "Price List Items / Product", 
+                    "Price List Items / Sequence", 
+                    "Price List Items / Based On",
+                    "items_id/price_discount",
+                    "items_id/price_surcharge"
+                    ]
+
+if action == 'baseprice':
+    fieldname = baseprice_header
+elif action == 'pricelist':
+    fieldname = pricelist_header
 
 outfile = open(outputfile,"wb")
-csvwriter = csv.DictWriter(outfile, delimiter=',',fieldnames=baseprice_header)
-csvwriter.writerow(dict((fn,fn) for fn in baseprice_header))
+csvwriter = csv.DictWriter(outfile, delimiter=',',fieldnames=fieldname)
+csvwriter.writerow(dict((fn,fn) for fn in fieldname))
 for row in outputlist:
      csvwriter.writerow(row)
 outfile.close()
