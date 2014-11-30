@@ -6,6 +6,7 @@ Created on Nov 18, 2014
 
 import sys
 from PyQt4 import QtGui
+from PyQt4.QtCore import *
 
 class MainWindow(QtGui.QWidget):
     
@@ -15,7 +16,7 @@ class MainWindow(QtGui.QWidget):
 
     def initUI(self):
         # Initialize main window
-        self.resize(250,150)
+        self.resize(300,300)
         self.center()
         self.setWindowTitle("MDC Data Preparation")
         
