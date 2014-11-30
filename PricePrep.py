@@ -63,7 +63,7 @@ for data in inputlist2:
             logmsg = logmsg + data['default_code'] + " matched with " + prod_code['prod_code'] + " multiplied by " + str(packcount_factor) +"\n"
             if action == 'baseprice':
                 outputlist.append({'id':data['id'],'default_code':data['default_code'],
-                                   'list_price':str(int(prod_code['srp'])*packcount_factor)})
+                                   'list_price':str(float(prod_code['srp'])*packcount_factor)})
             elif action == 'pricelist' and first_line:
                 outputlist.append({'Price List': pricelist_name,
                                    'Name': version_name,
@@ -72,7 +72,7 @@ for data in inputlist2:
                                    'Price List Items / Sequence': '50',
                                    'Price List Items / Based On': 'Public Price',
                                    'items_id/price_discount': -1,
-                                   'items_id/price_surcharge':str(int(prod_code['price'])*packcount_factor)})
+                                   'items_id/price_surcharge':str(float(prod_code['price'])*packcount_factor)})
                 first_line = False
             elif action == 'pricelist':
                 outputlist.append({'Price List': '',
@@ -82,7 +82,7 @@ for data in inputlist2:
                                    'Price List Items / Sequence': '1',
                                    'Price List Items / Based On': 'Public Price',
                                    'items_id/price_discount': -1,
-                                   'items_id/price_surcharge':str(int(prod_code['price'])*packcount_factor)})
+                                   'items_id/price_surcharge':str(float(prod_code['price'])*packcount_factor)})
             
             found_matched = True
             first_line = False
@@ -105,6 +105,15 @@ if action == 'baseprice':
     fieldname = baseprice_header
 elif action == 'pricelist':
     fieldname = pricelist_header
+    # Also add the 'default price'
+    outputlist.append({'Price List': '',
+                                   'Name': '',
+                                   'Price List Items / Rule Name': 'Default to Base Price',
+                                   'Price List Items / Product': '',
+                                   'Price List Items / Sequence': '999',
+                                   'Price List Items / Based On': 'Public Price',
+                                   'items_id/price_discount': 0,
+                                   'items_id/price_surcharge': 0})
 
 outfile = open(outputfile,"wb")
 csvwriter = csv.DictWriter(outfile, delimiter=',',fieldnames=fieldname)
