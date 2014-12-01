@@ -1,10 +1,10 @@
 Price List,Name,Price List Items / Rule Name,Price List Items / Product,Price List Items / Sequence,Price List Items / Based On,items_id/price_discount,items_id/price_surcharge
 Lotus Pricelist,Lotus version,AP3212,AP3212,50,Public Price,-1,52.92
 ,,AP3212P12,AP3212P12,1,Public Price,-1,635.04
-,,AP3212P72,AP3212P72,1,Public Price,-1,3810.24
+,,AP3212P72,AP3212P72,1,Public Price,-1,52.92
 ,,RK1061,RK1061,1,Public Price,-1,1013.29
 ,,RK106156P2,RK106156P2,1,Public Price,-1,2026.58
-,,SZ406154P2,SZ406154P2,1,Public Price,-1,1787.99
-,,WK30112634P4,WK30112634P4,1,Public Price,-1,3336.0
-,,WK308196P4,WK308196P4,1,Public Price,-1,2855.96
+,,SZ406154P2,SZ406154P2,1,Public Price,-1,3575.98
+,,WK30112634P4,WK30112634P4,1,Public Price,-1,13344.0
+,,WK308196P4,WK308196P4,1,Public Price,-1,11423.84
 ,,Default to Base Price,,999,Public Price,0,0

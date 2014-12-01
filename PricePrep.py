@@ -51,12 +51,12 @@ for data in inputlist2:
 #     print data['default_code']
     found_matched = False
     for prod_code in inputlist1:
-        re_pat = prod_code['prod_code'] + '[B|BL|D|G|M|P|W]{0,2}[0-9]{0,4}P?[1|2|3|4|6|12]{0,2}[B|BL|D|G|M|P|W]{0,2}$'
+        re_pat = prod_code['prod_code'] + '[B|BL|D|G|M|P|W]{0,2}[0-9]{0,4}P?[1|2|3|4|6|12|24|36|48|60|72]{0,2}[B|BL|D|G|M|P|W]{0,2}$'
         if re.search(re_pat, data['default_code']):
             # Found the matched RE pattern
             packcount_factor = 1
-            packcount = re.search(r'(P[2|3|4|6|12]{1,2}$)', data['default_code'])
-            if packcount:
+            packcount = re.search(r'(P[2|3|4|6|12|24|36|48|60|72]{1,2}$)', data['default_code'])
+            if packcount and not (prod_code['prod_code'] == data['default_code']):
                 if int(packcount.group(1)[1:]) > 1:
                     packcount_factor = int(packcount.group(1)[1:])
             
